@@ -15,7 +15,7 @@ from utils import load_checkpoints
 # noinspection PyBroadException
 class ProcessController(object):
 
-    def __init__(self, loadList="LoadList.csv", trimInterval=20):
+    def __init__(self, loadList="LoadList.csv", trimInterval=2):
         self.loadListPath = loadList
         self.loadList = pd.read_csv(loadList)
         self.interval = trimInterval
@@ -34,6 +34,17 @@ class ProcessController(object):
                 continue
 
     def trimAll(self, rawVideoDir="./dataset/video/raw/"):
+        dir_path = rawVideoDir
+        dir = os.listdir(dir_path)
+        for elem in dir:
+            if elem.count(".mp4") == 1:
+                videoTrimmer = VideoTrimmer(dir_path + elem, interval=self.interval)
+                videoTrimmer.trim()
+
+    def load_and_trim_batch(self, batch_urls, rawVideoDir="./dataset/video/raw/", destRawDir="/content/gdrive/My Drive/dataset/video/raw/"):
+        for url in batch_urls:
+            videoLoader = VideoLoader(url, rawVideoDir=rawVideoDir, batch_mode=True, dest_raw=destRawDir)
+            videoLoader.load()
         dir_path = rawVideoDir
         dir = os.listdir(dir_path)
         for elem in dir:
