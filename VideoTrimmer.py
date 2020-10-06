@@ -36,7 +36,7 @@ class VideoTrimmer(object):
             self.prepareFrameRate()
             print("Trimming...")
             request = "ffmpeg -i " + '"' + file + '"' + " -c copy -segment_time " + str(self.interval) + \
-                      " -reset_timestamps 1 -f segment " + '"' + file.rstrip(".mp4") + "_part_%d.mp4" + '"'
+                      " -reset_timestamps 1 -f segment " + '"' + file.rstrip(".mp4") + "_part_%d_.mp4" + '"'
             os.system(request)
             os.remove(file)
         else:
