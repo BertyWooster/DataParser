@@ -30,19 +30,18 @@ class VideoTrimmer(object):
             print("File already trimmed!")
         print("Done!")
 
-    # def trim(self):
-    #     file = self.path
-    #     if not os.path.exists(file.rstrip(".mp4")):
-    #         self.prepareFrameRate()
-    #         print("Trimming...")
-    #         os.makedirs(file.rstrip(".mp4"))
-    #         request = "ffmpeg -i " + '"' + file + '"' + " -c copy -segment_time " + str(self.interval) + \
-    #                   " -reset_timestamps 1 -f segment " + '"' + file.rstrip(".mp4") + "/output_%05d.mp4" + '"'
-    #         os.system(request)
-    #         os.remove(file)
-    #     else:
-    #         print("File already trimmed!")
-    #     print("Done!")
+    def pre_trim(self):
+        file = self.path
+        if not os.path.exists(file.rstrip(".mp4") + "_part_1.mp4"):
+            self.prepareFrameRate()
+            print("Trimming...")
+            request = "ffmpeg -i " + '"' + file + '"' + " -c copy -segment_time " + str(self.interval) + \
+                      " -reset_timestamps 1 -f segment " + '"' + file.rstrip(".mp4") + "_part_%d.mp4" + '"'
+            os.system(request)
+            os.remove(file)
+        else:
+            print("File already trimmed!")
+        print("Done!")
 
     # function prepare frame rate of video to 25 fps as in LRW dataset described in article
     def prepareFrameRate(self):

@@ -47,6 +47,13 @@ class ProcessController(object):
             videoLoader = VideoLoader(url, rawVideoDir=rawVideoDir, batch_mode=True, dest_raw=destRawDir)
             videoLoader.load()
         dir_path = rawVideoDir
+
+        dir = os.listdir(dir_path)
+        for elem in dir:
+            if elem.count(".mp4") == 1:
+                videoTrimmer = VideoTrimmer(dir_path + elem, interval=10)
+                videoTrimmer.pre_trim()
+
         dir = os.listdir(dir_path)
         for elem in dir:
             if elem.count(".mp4") == 1:
