@@ -26,7 +26,7 @@ class VideoLoader(object):
             os.makedirs(rawVideoDir)
 # FIXME
         if self.batch_mode and self.dest_raw is not None:
-            if (not os.path.exists(self.dest_raw + self.ID + "_part_1_.mp4")) and (not os.path.exists(self.dest_raw + self.ID+ "_part_0_")):
+            if (not os.path.exists(self.dest_raw + self.ID+ "_part_1_")) and (not os.path.exists(self.dest_raw + self.ID+ "_part_0_")):
                 self.load_batch = True
             else:
                 self.load_batch = False
