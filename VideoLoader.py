@@ -9,13 +9,12 @@ from pafy import pafy
 
 class VideoLoader(object):
 
-    def __init__(self, url="https://www.youtube.com/watch?v=KM3S51xVS8c", rawVideoDir="./dataset/video/raw/", batch_mode=False, dest_raw=None):
+    def __init__(self, url, rawVideoDir, batch_mode=False):
         self.url = url
         self.youtubeObj = pafy.new(url)
         self.rawVideoDir = rawVideoDir
         self.ID = self.youtubeObj.videoid
         self.rawVideo = self.youtubeObj.getbest(preftype="mp4")
-        self.dest_raw = dest_raw
         self.batch_mode = batch_mode
 
         streams = self.youtubeObj.streams
@@ -24,12 +23,9 @@ class VideoLoader(object):
 
         if not os.path.exists(rawVideoDir):
             os.makedirs(rawVideoDir)
-# FIXME
-        if self.batch_mode and self.dest_raw is not None:
-            if (not os.path.exists(self.dest_raw + self.ID+ "_part_1_")) and (not os.path.exists(self.dest_raw + self.ID+ "_part_0_")):
-                self.load_batch = True
-            else:
-                self.load_batch = False
+
+        if self.batch_mode:
+            self.load_batch = True
 
     def load(self):
         if self.batch_mode:
@@ -37,7 +33,8 @@ class VideoLoader(object):
         else:
             print("Loading file...")
             videoName = self.youtubeObj.title.replace("/", "_") + ".mp4"
-            if (not os.path.exists(self.rawVideoDir + self.ID + ".mp4")) and (not os.path.exists(self.rawVideoDir + self.ID)):
+            if (not os.path.exists(self.rawVideoDir + self.ID + ".mp4")) and (
+            not os.path.exists(self.rawVideoDir + self.ID)):
                 self.rawVideo.download(filepath=self.rawVideoDir)
             else:
                 print("Video already loaded!")
@@ -49,7 +46,8 @@ class VideoLoader(object):
         if self.load_batch:
             print("Loading file...")
             videoName = self.youtubeObj.title.replace("/", "_") + ".mp4"
-            if (not os.path.exists(self.rawVideoDir + self.ID + ".mp4")) and (not os.path.exists(self.rawVideoDir + self.ID)):
+            if (not os.path.exists(self.rawVideoDir + self.ID + ".mp4")) and (
+            not os.path.exists(self.rawVideoDir + self.ID)):
                 self.rawVideo.download(filepath=self.rawVideoDir)
             else:
                 print("Video already loaded!")

@@ -42,9 +42,9 @@ class ProcessController(object):
                 videoTrimmer = VideoTrimmer(dir_path + elem, interval=self.interval)
                 videoTrimmer.trim()
 
-    def load_and_trim_batch(self, batch_urls, rawVideoDir="/content/dataset/video/raw/", destRawDir="/content/gdrive/My Drive/dataset/video/raw/"):
+    def load_and_trim_batch(self, batch_urls, rawVideoDir):
         for url in batch_urls:
-            videoLoader = VideoLoader(url, rawVideoDir=rawVideoDir, batch_mode=True, dest_raw=destRawDir)
+            videoLoader = VideoLoader(url, rawVideoDir=rawVideoDir, batch_mode=True)
             videoLoader.load()
         dir_path = rawVideoDir
 
