@@ -15,26 +15,27 @@ from utils import load_checkpoints
 # noinspection PyBroadException
 class ProcessController(object):
 
-    def __init__(self, loadList="LoadList.csv", trimInterval=2):
-        self.loadListPath = loadList
-        self.loadList = pd.read_csv(loadList)
+    def __init__(self, trimInterval=2):
         self.interval = trimInterval
         pd.options.mode.chained_assignment = None
 
-    def load_and_trim_batch(self, batch_urls, rawVideoDir):
-        for url in batch_urls:
+    def load_and_trim(self, url, rawVideoDir):
+        try:
             videoLoader = VideoLoader(url, rawVideoDir=rawVideoDir)
             videoLoader.load()
-        dir_path = rawVideoDir
+            dir_path = rawVideoDir
 
-        dir = os.listdir(dir_path)
-        for elem in dir:
-            if elem.count(".mp4") == 1:
-                videoTrimmer = VideoTrimmer(dir_path + elem, interval=10)
-                videoTrimmer.pre_trim()
+            dir = os.listdir(dir_path)
+            for elem in dir:
+                if elem.count(".mp4") == 1:
+                    videoTrimmer = VideoTrimmer(dir_path + elem, interval=10)
+                    videoTrimmer.pre_trim()
 
-        dir = os.listdir(dir_path)
-        for elem in dir:
-            if elem.count(".mp4") == 1:
-                videoTrimmer = VideoTrimmer(dir_path + elem, interval=self.interval)
-                videoTrimmer.trim()
+            dir = os.listdir(dir_path)
+            for elem in dir:
+                if elem.count(".mp4") == 1:
+                    videoTrimmer = VideoTrimmer(dir_path + elem, interval=self.interval)
+                    videoTrimmer.trim()
+            return True, url
+        except:
+            return False, url
