@@ -46,5 +46,6 @@ class ProcessController(object):
                         videoTrimmer = VideoTrimmer(dir_path + elem, interval=self.interval)
                         videoTrimmer.trim()
             return True, url
-        except:
+        except Exception as E:
+            print(E)
             return False, url
