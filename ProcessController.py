@@ -41,7 +41,7 @@ class ProcessController(object):
                             curr = videoTrimmer.trim()
                             parts_num += curr
                         else:
-                            os.remove(elem)
+                            os.remove(dir_path+elem)
                     else:
                         videoTrimmer = VideoTrimmer(dir_path + elem, interval=self.interval)
                         videoTrimmer.trim()
