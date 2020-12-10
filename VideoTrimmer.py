@@ -26,9 +26,11 @@ class VideoTrimmer(object):
             for i in tqdm(range(int(duration / self.interval))):
                 os.system("ffmpeg -i " + path + " -ss " + str(i * self.interval) + " -t " + str(self.interval) + " " + path.rstrip(
                     ".mp4") + "/" + str(i + 1) + ".mp4")
+            print("Done!")
+            return int(duration / self.interval)
         else:
             print("File already trimmed!")
-        print("Done!")
+            return 0
 
     def pre_trim(self):
         file = self.path

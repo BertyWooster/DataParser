@@ -19,7 +19,7 @@ class ProcessController(object):
         self.interval = trimInterval
         pd.options.mode.chained_assignment = None
 
-    def load_and_trim(self, url, rawVideoDir):
+    def load_and_trim(self, url, rawVideoDir, limit=None):
         try:
             videoLoader = VideoLoader(url, rawVideoDir=rawVideoDir)
             videoLoader.load()
@@ -32,10 +32,19 @@ class ProcessController(object):
                     videoTrimmer.pre_trim()
 
             dir = os.listdir(dir_path)
+            parts_num = 0
             for elem in dir:
                 if elem.count(".mp4") == 1:
-                    videoTrimmer = VideoTrimmer(dir_path + elem, interval=self.interval)
-                    videoTrimmer.trim()
+                    if limit is not None:
+                        if parts_num < limit:
+                            videoTrimmer = VideoTrimmer(dir_path + elem, interval=self.interval)
+                            curr = videoTrimmer.trim()
+                            parts_num += curr
+                        else:
+                            os.remove(elem)
+                    else:
+                        videoTrimmer = VideoTrimmer(dir_path + elem, interval=self.interval)
+                        videoTrimmer.trim()
             return True, url
         except:
             return False, url
